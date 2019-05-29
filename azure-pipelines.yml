@@ -45,6 +45,7 @@ stages:
       
   jobs:
   - deployment: DeployDev
+    timeoutInMinutes: 20
     displayName: Deploy to dev job
     pool:
       vmImage: ubuntu-latest
