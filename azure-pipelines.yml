@@ -45,7 +45,6 @@ stages:
       
   jobs:
   - deployment: DeployDev
-    timeoutInMinutes: 20
     displayName: Deploy to dev job
     pool:
       vmImage: ubuntu-latest
@@ -62,6 +61,7 @@ stages:
               downloadPath: '$(System.ArtifactsDirectory)/manifests'
 
           - task: KubernetesManifest@0
+            timeoutInMinutes: 20
             displayName: Create imagePullSecret from dockerRegistryServiceConnection
             inputs:
               action: createSecret
@@ -70,6 +70,7 @@ stages:
               dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
 
           - task: KubernetesManifest@0
+            timeoutInMinutes: 20
             displayName: Create secret for MongoDB
             inputs:
               action: createSecret
@@ -79,6 +80,7 @@ stages:
               secretArguments: --from-literal=mongoHost=$(mongoHost) --from-literal=mongoUser=$(mongoUser) --from-literal=mongoPassword=$(mongoPassword)
 
           - task: KubernetesManifest@0
+            timeoutInMinutes: 20
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: deploy
@@ -90,6 +92,7 @@ stages:
                 $(imageRepository):$(tag)
 
           - task: KubernetesManifest@0
+            timeoutInMinutes: 20
             displayName: Patch the deployment environment variables
             inputs:
               action: patch
